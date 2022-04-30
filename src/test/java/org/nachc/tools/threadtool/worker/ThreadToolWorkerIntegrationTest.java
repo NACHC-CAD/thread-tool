@@ -13,13 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ThreadToolWorkerIntegrationTest {
 
-	private int NUMBER_OF_WIDGETS = 10000;
+	private static final int NUMBER_OF_WIDGETS = 10000;
 
-	private int NUMBER_OF_THREADS = 1000;
+	private static final int NUMBER_OF_THREADS = 1000;
 	
 	@Test
 	public void shouldCreateWidgets() {
-		testWidget(new CreateStringsWidget(0, 0));
+		testWidget(new CreateStringsWidget(0, 0, 1000));
 	}
 	
 	private void testWidget(Widget template) {
@@ -32,7 +32,7 @@ public class ThreadToolWorkerIntegrationTest {
 			runnableList.add(runnable);
 		}
 		timer.start();
-		ThreadToolWorker worker = new ThreadToolWorker(runnableList, NUMBER_OF_THREADS);
+		ThreadToolWorker worker = new ThreadToolWorker(runnableList, NUMBER_OF_THREADS, null);
 		worker.exec();
 		timer.stop();
 		log.info("");

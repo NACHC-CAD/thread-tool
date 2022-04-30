@@ -14,28 +14,32 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CreateStringsWidget implements Widget {
 
-	private static final int LOG_RATE = 1000;
-
 	private static int idCounter = 0;
 	
+	private int logRate;
+
 	private int lot;
 
 	private int id;
 
-	public CreateStringsWidget(int lot, int id) {
+	public CreateStringsWidget(int lot, int id, int logRate) {
 		this.lot = lot;
 		this.id = id;
+		this.logRate = logRate;
+		if(id % logRate == 0) {
+			log.info("Constructor for widget called: " + id);
+		}
 	}
 
 	@Override
 	public Widget getNewInstance() {
 		idCounter++;
-		return new CreateStringsWidget(this.lot, idCounter);
+		return new CreateStringsWidget(this.lot, idCounter, this.logRate);
 	}
 
 	@Override
 	public void build() {
-		if (id % LOG_RATE == 0) {
+		if (id % logRate == 0) {
 			log.info("Starting build: " + lot + "/" + id);
 		}
 		String guid = null;
@@ -45,7 +49,7 @@ public class CreateStringsWidget implements Widget {
 		}
 		*/
 		TimeUtil.sleep(1);
-		if (id % LOG_RATE == 0) {
+		if (id % logRate == 0) {
 			log.info("DONE: " + lot + "/" + id + " (" + guid + ")");
 		}
 	}
