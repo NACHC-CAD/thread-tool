@@ -10,14 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ThreadToolWorker {
 
-	List<Runnable> runnableList;
+	private List<Runnable> runnableList;
 
-	public ThreadToolWorker(List<Runnable> runnableList) {
+	private int numberOfThreads;
+	
+	public ThreadToolWorker(List<Runnable> runnableList, int numberOfThreads) {
 		this.runnableList = runnableList;
+		this.numberOfThreads = numberOfThreads;
 	}
 
 	public void exec() {
-		ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(runnableList.size());
+		ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(numberOfThreads);
 		for (Runnable runnable : runnableList) {
 			executor.execute(runnable);
 		}
