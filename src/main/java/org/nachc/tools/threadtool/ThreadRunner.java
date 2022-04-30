@@ -29,8 +29,6 @@ public class ThreadRunner {
 
 	private ThreadPoolExecutor executor;
 
-	private boolean done = false;
-
 	public ThreadRunner(int numberOfThreadsPerWorker, int numberOfRunnablesPerWorker, int numberOfWorkers, ThreadToolUser runnableIter) {
 		this.numberOfThreadsPerWorker = numberOfThreadsPerWorker;
 		this.numberOfRunnablesPerWorker = numberOfRunnablesPerWorker;
@@ -43,7 +41,7 @@ public class ThreadRunner {
 		synchronized (lock) {
 			addWorkers();
 		}
-		while (this.active.size() > 0 && done == false) {
+		while (this.active.size() > 0) {
 			// System.out.println("here");
 		}
 		log.info("SHUTTING DOWN----------------");
@@ -92,7 +90,6 @@ public class ThreadRunner {
 			this.active.remove(worker);
 			if (active.size() > 0) {
 				addWorkers();
-				this.done = true;
 			}
 			log.info("done done");
 		}

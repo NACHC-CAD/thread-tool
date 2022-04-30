@@ -41,6 +41,8 @@ public class ThreadToolWorker {
 				runner.done(this);
 			}
 		}
-		this.runner.logActive();
+		if(this.runner != null) {
+			this.runner.logActive();
+		}
 	}
 }
