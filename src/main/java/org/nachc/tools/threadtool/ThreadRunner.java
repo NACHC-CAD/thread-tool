@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.nachc.tools.threadtool.runnableiter.ThreadToolUser;
 import org.nachc.tools.threadtool.worker.ThreadToolWorker;
 import org.nachc.tools.threadtool.worker.ThreadToolWorkerRunnable;
+import org.yaorma.util.time.TimeUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,8 +42,12 @@ public class ThreadRunner {
 		synchronized (lock) {
 			addWorkers();
 		}
-		while (this.active.size() > 0) {
-			// System.out.println("here");
+		while (true) {
+			synchronized (lock) {
+				if(this.active.size() == 0) {
+					break;
+				}
+			}
 		}
 		log.info("SHUTTING DOWN----------------");
 		executor.shutdown();
@@ -54,7 +59,6 @@ public class ThreadRunner {
 	}
 
 	private void addWorkers() {
-		log.info("start addWorkers");
 		while (runnableIter.hasNext() && active.size() < numberOfWorkers) {
 			ThreadToolWorker worker = getNextWorker();
 			if (worker == null) {
@@ -63,12 +67,10 @@ public class ThreadRunner {
 				this.active.add(worker);
 			}
 		}
-		log.info("done addWorkers");
 	}
 
 	private ThreadToolWorker getNextWorker() {
 		synchronized (lock) {
-			log.info("start next worker");
 			if (runnableIter.hasNext() == false) {
 				return null;
 			}
@@ -79,7 +81,6 @@ public class ThreadRunner {
 			ThreadToolWorker worker = new ThreadToolWorker(runnableList, numberOfThreadsPerWorker, this);
 			ThreadToolWorkerRunnable runnable = new ThreadToolWorkerRunnable(worker);
 			this.executor.execute(runnable);
-			log.info("done next worker");
 			return worker;
 		}
 	}
