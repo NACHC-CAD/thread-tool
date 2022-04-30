@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 import org.nachc.tools.threadtool.runnableiter.ThreadToolUser;
 import org.nachc.tools.threadtool.worker.ThreadToolWorker;
 import org.nachc.tools.threadtool.worker.ThreadToolWorkerRunnable;
-import org.yaorma.util.time.TimeUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,16 +28,15 @@ public class ThreadRunner {
 	private Object lock = new Object();
 
 	private ThreadPoolExecutor executor;
-	
+
 	private boolean done = false;
 
-	
 	public ThreadRunner(int numberOfThreadsPerWorker, int numberOfRunnablesPerWorker, int numberOfWorkers, ThreadToolUser runnableIter) {
 		this.numberOfThreadsPerWorker = numberOfThreadsPerWorker;
 		this.numberOfRunnablesPerWorker = numberOfRunnablesPerWorker;
 		this.numberOfWorkers = numberOfWorkers;
 		this.runnableIter = runnableIter;
-		this.executor  = (ThreadPoolExecutor) Executors.newFixedThreadPool(numberOfWorkers);
+		this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(numberOfWorkers);
 	}
 
 	public void exec() {
@@ -92,7 +90,7 @@ public class ThreadRunner {
 		synchronized (lock) {
 			log.info("start done");
 			this.active.remove(worker);
-			if(active.size() > 0) {
+			if (active.size() > 0) {
 				addWorkers();
 				this.done = true;
 			}
@@ -106,7 +104,7 @@ public class ThreadRunner {
 			log.info("active:  " + active.size());
 			log.info("waiting: " + runnableIter.waiting());
 			log.info("------------");
-		}		
+		}
 	}
-	
+
 }
