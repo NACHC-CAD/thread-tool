@@ -30,7 +30,6 @@ public class ThreadToolWorker {
 			for (Runnable runnable : runnableList) {
 				executor.execute(runnable);
 			}
-			log.info("SHUTTING DOWN----------------");
 			executor.shutdown();
 			try {
 				executor.awaitTermination(1000, TimeUnit.HOURS);
@@ -42,5 +41,6 @@ public class ThreadToolWorker {
 				runner.done(this);
 			}
 		}
+		this.runner.logActive();
 	}
 }

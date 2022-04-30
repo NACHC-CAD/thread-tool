@@ -14,8 +14,8 @@ public class WidgetRunnableIter implements RunnableIterator {
 
 	private Object lock = new Object();
 
-	public WidgetRunnableIter(int howMany) {
-		CreateStringsWidget template = new CreateStringsWidget(0, 0, 1);
+	public WidgetRunnableIter(int howMany, int logRate) {
+		CreateStringsWidget template = new CreateStringsWidget(0, 0, logRate);
 		for (int i = 0; i < howMany; i++) {
 			Widget widget = template.getNewInstance();
 			WidgetRunnable runnable = new WidgetRunnable(widget);
