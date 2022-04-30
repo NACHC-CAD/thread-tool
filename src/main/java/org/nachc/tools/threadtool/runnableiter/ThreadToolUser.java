@@ -1,6 +1,6 @@
 package org.nachc.tools.threadtool.runnableiter;
 
-public interface RunnableIterator {
+public interface ThreadToolUser {
 
 	public Runnable getNext();
 	

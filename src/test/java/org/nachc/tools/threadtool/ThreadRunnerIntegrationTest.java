@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ThreadRunnerIntegrationTest {
 
-	private static final int NUMBER_TO_MAKE = 1000000;
+	private static final int NUMBER_TO_MAKE = 1000;
 
 	private static final int THREADS_PER_WORKER = 20;
 

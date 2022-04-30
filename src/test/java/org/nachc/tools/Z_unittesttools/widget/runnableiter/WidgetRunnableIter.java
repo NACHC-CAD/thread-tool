@@ -6,9 +6,9 @@ import java.util.List;
 import org.nachc.tools.Z_unittesttools.widget.Widget;
 import org.nachc.tools.Z_unittesttools.widget.WidgetRunnable;
 import org.nachc.tools.Z_unittesttools.widget.impl.CreateStringsWidget;
-import org.nachc.tools.threadtool.runnableiter.RunnableIterator;
+import org.nachc.tools.threadtool.runnableiter.ThreadToolUser;
 
-public class WidgetRunnableIter implements RunnableIterator {
+public class WidgetRunnableIter implements ThreadToolUser {
 
 	private List<Runnable> runnableList = new ArrayList<Runnable>();
 

@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.nachc.tools.threadtool.runnableiter.RunnableIterator;
+import org.nachc.tools.threadtool.runnableiter.ThreadToolUser;
 import org.nachc.tools.threadtool.worker.ThreadToolWorker;
 import org.nachc.tools.threadtool.worker.ThreadToolWorkerRunnable;
 import org.yaorma.util.time.TimeUtil;
@@ -22,16 +22,18 @@ public class ThreadRunner {
 
 	private int numberOfWorkers;
 
-	private RunnableIterator runnableIter;
+	private ThreadToolUser runnableIter;
 
 	private List<ThreadToolWorker> active = new ArrayList<ThreadToolWorker>();
 
 	private Object lock = new Object();
 
 	private ThreadPoolExecutor executor;
+	
+	private boolean done = false;
 
 	
-	public ThreadRunner(int numberOfThreadsPerWorker, int numberOfRunnablesPerWorker, int numberOfWorkers, RunnableIterator runnableIter) {
+	public ThreadRunner(int numberOfThreadsPerWorker, int numberOfRunnablesPerWorker, int numberOfWorkers, ThreadToolUser runnableIter) {
 		this.numberOfThreadsPerWorker = numberOfThreadsPerWorker;
 		this.numberOfRunnablesPerWorker = numberOfRunnablesPerWorker;
 		this.numberOfWorkers = numberOfWorkers;
@@ -43,8 +45,8 @@ public class ThreadRunner {
 		synchronized (lock) {
 			addWorkers();
 		}
-		while (this.active.size() > 0) {
-			TimeUtil.sleep(1);
+		while (this.active.size() > 0 && done == false) {
+			// System.out.println("here");
 		}
 		log.info("SHUTTING DOWN----------------");
 		executor.shutdown();
@@ -56,6 +58,7 @@ public class ThreadRunner {
 	}
 
 	private void addWorkers() {
+		log.info("start addWorkers");
 		while (runnableIter.hasNext() && active.size() < numberOfWorkers) {
 			ThreadToolWorker worker = getNextWorker();
 			if (worker == null) {
@@ -64,10 +67,12 @@ public class ThreadRunner {
 				this.active.add(worker);
 			}
 		}
+		log.info("done addWorkers");
 	}
 
 	private ThreadToolWorker getNextWorker() {
 		synchronized (lock) {
+			log.info("start next worker");
 			if (runnableIter.hasNext() == false) {
 				return null;
 			}
@@ -78,14 +83,20 @@ public class ThreadRunner {
 			ThreadToolWorker worker = new ThreadToolWorker(runnableList, numberOfThreadsPerWorker, this);
 			ThreadToolWorkerRunnable runnable = new ThreadToolWorkerRunnable(worker);
 			this.executor.execute(runnable);
+			log.info("done next worker");
 			return worker;
 		}
 	}
 
 	public void done(ThreadToolWorker worker) {
 		synchronized (lock) {
+			log.info("start done");
 			this.active.remove(worker);
-			addWorkers();
+			if(active.size() > 0) {
+				addWorkers();
+				this.done = true;
+			}
+			log.info("done done");
 		}
 	}
 
