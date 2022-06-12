@@ -40,17 +40,15 @@ public class CreateStringsWidget implements Widget {
 	@Override
 	public void build() {
 		if (id % logRate == 0) {
-			log.info("Starting build: " + lot + "/" + id);
+			log.info("Starting build: " + id);
 		}
 		String guid = null;
-		/*
 		for (int i = 0; i < 1000; i++) {
 			guid = GuidFactory.getGuid();
 		}
-		*/
 		TimeUtil.sleep(1);
 		if (id % logRate == 0) {
-			log.info("DONE: " + lot + "/" + id + " (" + guid + ")");
+			log.info("DONE: " + id + " (" + guid + ")");
 		}
 	}
 
