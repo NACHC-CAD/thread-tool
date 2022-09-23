@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<properties>
-		<version>1.1.001-SNAPSHOT</version>
+		<version>1.0.001</version>
 	</properties>
 
 	<groupId>org.nachc.cad.tools</groupId>
@@ -33,6 +33,28 @@
 			<url>https://nexus.bedatadriven.com/content/groups/public/</url>
 		</repository>
 	</repositories>
+
+    <developers>
+	    <developer>
+		    <name>John Gresh</name>
+		    <email>johngresh@curlewconsulting.com</email>
+		    <organization>NACHC</organization>
+		    <organizationUrl>https.www.nachc.org</organizationUrl>
+	    </developer>
+    </developers>
+  
+	<scm>
+		<connection>scm:git:git://github.com/NACHC-CAD/core</connection>
+		<developerConnection>scm:git:ssh://github.com:NACHC-CAD/core.git</developerConnection>
+		<url>http://github.com/NACHC-CAD/core/tree/master</url>
+	</scm>  
+  
+	<distributionManagement>
+	  <snapshotRepository>
+	    <id>ossrh</id>
+	    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+	  </snapshotRepository>
+	</distributionManagement>
 
 	<!-- * * dependencies * * -->
 
@@ -93,6 +115,7 @@
 
 		<pluginManagement>
 			<plugins>
+
 				<!-- compiler -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -102,6 +125,7 @@
 						<release>11</release>
 					</configuration>
 				</plugin>		
+
 			</plugins>
 		</pluginManagement>
 
@@ -117,6 +141,89 @@
 				</configuration>
 			</plugin>
 
+			<!-- 
+			*
+			* Generate sources and java docs (required for mvn distribution) 
+			*
+			* -->
+			
+			<!-- source -->
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-source-plugin</artifactId>
+			  <version>2.2.1</version>
+			  <executions>
+			    <execution>
+			      <id>attach-sources</id>
+			      <goals>
+			        <goal>jar-no-fork</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			</plugin>
+			<!-- javadoc -->
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-javadoc-plugin</artifactId>
+			  <version>2.9.1</version>
+			  <executions>
+			    <execution>
+			      <id>attach-javadocs</id>
+			      <goals>
+			        <goal>jar</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			</plugin>
+	
+			<!-- 
+			*
+			* MVN Distribution
+			* (see https://central.sonatype.org/publish/publish-maven/ for details)
+			*
+			* -->
+	
+			<!-- staging -->
+		    <plugin>
+		      <groupId>org.sonatype.plugins</groupId>
+		      <artifactId>nexus-staging-maven-plugin</artifactId>
+		      <version>1.6.7</version>
+		      <extensions>true</extensions>
+		      <configuration>
+		        <serverId>ossrh</serverId>
+		        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+		        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+		      </configuration>
+		    </plugin>
+
+			<!-- certificate signing -->
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-gpg-plugin</artifactId>
+			  <version>1.5</version>
+			  <executions>
+			    <execution>
+			      <id>sign-artifacts</id>
+			      <phase>verify</phase>
+			      <goals>
+			        <goal>sign</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			</plugin>
+			
+			<plugin>
+			  <groupId>org.sonatype.plugins</groupId>
+			  <artifactId>nexus-staging-maven-plugin</artifactId>
+			  <version>1.6.7</version>
+			  <extensions>true</extensions>
+			  <configuration>
+			     <serverId>ossrh</serverId>
+			     <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+			     <autoReleaseAfterClose>true</autoReleaseAfterClose>
+			  </configuration>
+			</plugin>
+    
 		</plugins>
 	</build>
 
