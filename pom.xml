@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<properties>
-		<version>1.1.001-SNAPSHOT</version>
+		<version>1.0.001</version>
 	</properties>
 
 	<groupId>org.nachc.cad.tools</groupId>
@@ -26,6 +26,30 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<name>John Gresh</name>
+			<email>johngresh@curlewconsulting.com</email>
+			<organization>NACHC</organization>
+			<organizationUrl>https.www.nachc.org</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/NACHC-CAD/core</connection>
+		<developerConnection>scm:git:ssh://github.com:NACHC-CAD/core.git</developerConnection>
+		<url>http://github.com/NACHC-CAD/core/tree/master</url>
+	</scm>  
+  
+	<distributionManagement>
+	  <snapshotRepository>
+	    <id>ossrh</id>
+	    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+	  </snapshotRepository>
+	</distributionManagement>
+
+	<!-- repositories -->
+	
 	<repositories>
 		<repository>
 			<id>bedatadriven</id>
@@ -34,7 +58,7 @@
 		</repository>
 	</repositories>
 
-	<!-- * * dependencies * * -->
+	<!-- dependencies -->
 
 	<dependencies>
 
@@ -42,10 +66,10 @@
 		<dependency>
 			<groupId>org.nachc.cad.tools</groupId>
 			<artifactId>core</artifactId>
-			<version>${version}</version>
+			<version>1.0.004</version>
 		</dependency>
 
-		<!-- * * BASIC TOOLS * * -->
+		<!-- BASIC TOOLS -->
 
 		<!-- LOMBOK (Lombok jar also needs to be added to Eclipse IDE) -->
 		<dependency>
@@ -87,12 +111,13 @@
 
 	</dependencies>
 
-	<!-- * * build * * -->
+	<!-- build -->
 
 	<build>
 
 		<pluginManagement>
 			<plugins>
+
 				<!-- compiler -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -102,20 +127,21 @@
 						<release>11</release>
 					</configuration>
 				</plugin>		
+
 			</plugins>
 		</pluginManagement>
 
 		<plugins>
 
-			<!-- don't run the integration tests -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M5</version>
-				<configuration>
-					<skipTests>true</skipTests>
-				</configuration>
-			</plugin>
+		<!-- don't run the integration tests -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin</artifactId>
+			<version>3.0.0-M5</version>
+			<configuration>
+				<skipTests>true</skipTests>
+			</configuration>
+		</plugin>
 
 		</plugins>
 	</build>
